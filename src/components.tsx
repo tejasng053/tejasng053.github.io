@@ -1,0 +1,240 @@
+import { useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { featuredProjects, navigation, site } from './data'
+import type { FeaturedProject } from './data'
+import { Link, useRouter } from './router'
+
+export function ArrowIcon() {
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 16 16 4M7 4h9v9" /></svg>
+}
+
+export function GitHubIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.72c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.61.07-.61 1 .07 1.52 1.02 1.52 1.02.89 1.51 2.33 1.08 2.9.83.09-.64.35-1.08.63-1.33-2.22-.25-4.56-1.1-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.7 9.7 0 0 1 12 6.8a9.7 9.7 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.68-4.57 4.93.36.31.68.9.68 1.81v2.68c0 .26.18.57.69.48A10 10 0 0 0 12 2Z" fill="currentColor" stroke="none" /></svg>
+}
+
+export function LinkedInIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9v8M7 6.5v.01M11 17v-5a3 3 0 0 1 6 0v5M11 9v8" /></svg>
+}
+
+export function SiteHeader() {
+  const { path } = useRouter()
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => setOpen(false), [path])
+
+  return (
+    <header className="site-header">
+      <Link className="brand" to="/" data-cursor="HOME" aria-label="Tejas NG home">
+        <span>TN</span><i>Portfolio / 26</i>
+      </Link>
+      <nav className="desktop-nav" aria-label="Primary navigation">
+        {navigation.map((item) => (
+          <Link key={item.path} to={item.path} className={path === item.path ? 'active' : ''} aria-current={path === item.path ? 'page' : undefined}>
+            <small>{item.number}</small>{item.label}
+          </Link>
+        ))}
+      </nav>
+      <div className="header-end">
+        <a href={site.codolio} target="_blank" rel="noreferrer" data-cursor="OPEN">Codolio <ArrowIcon /></a>
+        <button className="menu-button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label="Toggle menu">
+          <span>{open ? 'Close' : 'Menu'}</span><i>{open ? '×' : '＋'}</i>
+        </button>
+      </div>
+      {open && (
+        <nav className="mobile-nav" aria-label="Mobile navigation">
+          {navigation.map((item) => <Link key={item.path} to={item.path}><small>{item.number}</small><span>{item.label}</span></Link>)}
+          <a href={site.codolio} target="_blank" rel="noreferrer"><small>EXT</small><span>Codolio ↗</span></a>
+        </nav>
+      )}
+    </header>
+  )
+}
+
+export function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <div><span>© 2026 TEJAS NG</span><span>{site.location}</span></div>
+      <div>
+        <a href={site.github} target="_blank" rel="noreferrer">GitHub</a>
+        <a href={site.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href={site.codolio} target="_blank" rel="noreferrer">Codolio</a>
+      </div>
+      <Link to="/contact">Available for work <i /></Link>
+    </footer>
+  )
+}
+
+export function PageIntro({ number, eyebrow, title, description }: { number: string; eyebrow: string; title: string; description: string }) {
+  return (
+    <header className="page-intro" data-reveal>
+      <div className="page-intro-meta"><span>{number}</span><span>{eyebrow}</span></div>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </header>
+  )
+}
+
+export function SectionHeading({ index, title, note, action }: { index: string; title: string; note?: string; action?: ReactNode }) {
+  return (
+    <div className="section-heading" data-reveal>
+      <div><span>{index}</span><h2>{title}</h2></div>
+      {note && <p>{note}</p>}
+      {action && <div className="section-action">{action}</div>}
+    </div>
+  )
+}
+
+export function ProjectCard({ project, index, compact = false }: { project: FeaturedProject; index: number; compact?: boolean }) {
+  return (
+    <article className={`project-card-new ${compact ? 'compact' : ''}`} data-reveal>
+      <a className="project-visual-new" href={project.repository} target="_blank" rel="noreferrer" data-cursor="VIEW">
+        {project.image ? <img src={project.image} alt={project.imageAlt ?? ''} /> : (
+          <div className="project-type-visual" aria-hidden="true">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <strong>{project.visualCode}</strong>
+            <i>TEJAS_NG / {project.year}</i>
+          </div>
+        )}
+        <div className="project-visual-label"><span>{project.status}</span><span>{project.year}</span></div>
+      </a>
+      <div className="project-copy-new">
+        <div className="project-number">{String(index + 1).padStart(2, '0')}</div>
+        <div>
+          <span>{project.label}</span>
+          <h3>{project.name}</h3>
+          <p>{compact ? project.summary : project.detail}</p>
+          <div className="project-stack">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
+        </div>
+        <div className="project-actions">
+          <a href={project.repository} target="_blank" rel="noreferrer" data-cursor="OPEN">Source <ArrowIcon /></a>
+          {project.live && <a href={project.live} target="_blank" rel="noreferrer" data-cursor="OPEN">Live <ArrowIcon /></a>}
+        </div>
+      </div>
+    </article>
+  )
+}
+
+export function ContactBand({ label = 'Have a project, role, or difficult idea?' }: { label?: string }) {
+  return (
+    <section className="contact-band" data-reveal>
+      <span>05 / CONTACT</span>
+      <h2>{label}</h2>
+      <Link to="/contact" data-cursor="TALK">Let’s talk <ArrowIcon /></Link>
+    </section>
+  )
+}
+
+export function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
+  return <a className="arrow-link" href={href} target="_blank" rel="noreferrer" data-cursor="OPEN">{children}<ArrowIcon /></a>
+}
+
+export function ProjectPreviewList() {
+  return <div className="project-preview-list">{featuredProjects.slice(0, 3).map((project, index) => <ProjectCard key={project.id} project={project} index={index} compact />)}</div>
+}
+
+export function TopProgress({ route }: { route: string }) {
+  useEffect(() => {
+    const update = () => {
+      const distance = document.documentElement.scrollHeight - window.innerHeight
+      const value = distance > 0 ? Math.min(100, Math.max(0, (window.scrollY / distance) * 100)) : 0
+      document.documentElement.style.setProperty('--scroll', `${value}%`)
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
+  }, [route])
+  return <div className="top-progress" aria-hidden="true"><span /></div>
+}
+
+export function RevealController({ route }: { route: string }) {
+  useEffect(() => {
+    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach((item) => item.classList.add('visible'))
+      return
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('visible')
+        observer.unobserve(entry.target)
+      })
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' })
+    items.forEach((item) => observer.observe(item))
+    return () => observer.disconnect()
+  }, [route])
+  return null
+}
+
+export function CustomCursor() {
+  const ringRef = useRef<HTMLDivElement>(null)
+  const dotRef = useRef<HTMLDivElement>(null)
+  const labelRef = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const canUse = window.matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)')
+    if (!canUse.matches || !ringRef.current || !dotRef.current || !labelRef.current) return
+
+    const ring = ringRef.current
+    const dot = dotRef.current
+    const label = labelRef.current
+    let targetX = -100
+    let targetY = -100
+    let ringX = -100
+    let ringY = -100
+    let frame = 0
+
+    document.documentElement.classList.add('custom-pointer')
+
+    const animate = () => {
+      ringX += (targetX - ringX) * 0.18
+      ringY += (targetY - ringY) * 0.18
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
+      frame = window.requestAnimationFrame(animate)
+    }
+
+    const move = (event: PointerEvent) => {
+      targetX = event.clientX
+      targetY = event.clientY
+      dot.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`
+      ring.classList.add('shown')
+      dot.classList.add('shown')
+    }
+
+    const over = (event: PointerEvent) => {
+      const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-cursor]')
+      const cursorLabel = target?.dataset.cursor ?? ''
+      label.textContent = cursorLabel
+      ring.classList.toggle('active', Boolean(cursorLabel))
+    }
+
+    const leave = () => {
+      ring.classList.remove('shown')
+      dot.classList.remove('shown')
+    }
+
+    frame = window.requestAnimationFrame(animate)
+    window.addEventListener('pointermove', move, { passive: true })
+    document.addEventListener('pointerover', over, { passive: true })
+    document.addEventListener('mouseleave', leave)
+
+    return () => {
+      document.documentElement.classList.remove('custom-pointer')
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('pointermove', move)
+      document.removeEventListener('pointerover', over)
+      document.removeEventListener('mouseleave', leave)
+    }
+  }, [])
+
+  return (
+    <div className="cursor-layer" aria-hidden="true">
+      <div className="cursor-ring" ref={ringRef}><span ref={labelRef} /></div>
+      <div className="cursor-dot" ref={dotRef} />
+    </div>
+  )
+}
