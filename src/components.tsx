@@ -85,9 +85,12 @@ export function SectionHeading({ index, title, note, action }: { index: string; 
 }
 
 export function ProjectCard({ project, index, compact = false }: { project: FeaturedProject; index: number; compact?: boolean }) {
+  const primaryUrl = project.live ?? project.repository
+  const primaryLabel = project.live ? `Open ${project.name} live demo` : `Open ${project.name} on GitHub`
+
   return (
     <article className={`project-card-new ${compact ? 'compact' : ''}`} data-reveal>
-      <a className="project-visual-new" href={project.repository} target="_blank" rel="noreferrer" data-cursor="VIEW">
+      <a className="project-visual-new" href={primaryUrl} target="_blank" rel="noreferrer" data-cursor={project.live ? 'LAUNCH' : 'VIEW'} aria-label={primaryLabel}>
         {project.image ? <img src={project.image} alt={project.imageAlt ?? ''} /> : (
           <div className="project-type-visual" aria-hidden="true">
             <span>{String(index + 1).padStart(2, '0')}</span>
@@ -100,14 +103,16 @@ export function ProjectCard({ project, index, compact = false }: { project: Feat
       <div className="project-copy-new">
         <div className="project-number">{String(index + 1).padStart(2, '0')}</div>
         <div>
-          <span>{project.label}</span>
-          <h3>{project.name}</h3>
-          <p>{compact ? project.summary : project.detail}</p>
-          <div className="project-stack">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
+          <a className="project-main-link" href={primaryUrl} target="_blank" rel="noreferrer" data-cursor={project.live ? 'LAUNCH' : 'VIEW'} aria-label={primaryLabel}>
+            <span>{project.label}</span>
+            <h3>{project.name}</h3>
+            <p>{compact ? project.summary : project.detail}</p>
+            <div className="project-stack">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
+          </a>
         </div>
         <div className="project-actions">
-          <a href={project.repository} target="_blank" rel="noreferrer" data-cursor="OPEN">Source <ArrowIcon /></a>
-          {project.live && <a href={project.live} target="_blank" rel="noreferrer" data-cursor="OPEN">Live <ArrowIcon /></a>}
+          <a className="project-action-button" href={project.repository} target="_blank" rel="noreferrer" data-cursor="GITHUB" aria-label={`View ${project.name} on GitHub`}><GitHubIcon /><span>GitHub</span></a>
+          {project.live && <a className="project-action-button primary" href={project.live} target="_blank" rel="noreferrer" data-cursor="LIVE" aria-label={`Open ${project.name} hosted site`}><span>Live demo</span><ArrowIcon /></a>}
         </div>
       </div>
     </article>
