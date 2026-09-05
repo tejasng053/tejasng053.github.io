@@ -19,6 +19,25 @@ export function LinkedInIcon() {
 export function SiteHeader() {
   const { path } = useRouter()
   const [open, setOpen] = useState(false)
+  const [detached, setDetached] = useState(false)
+
+  useEffect(() => {
+    let frame = 0
+    let floating = window.scrollY > 28
+    setDetached(floating)
+    const update = () => {
+      frame = 0
+      // Separate thresholds prevent jitter near the top during trackpad scrolling.
+      const next = floating ? window.scrollY > 4 : window.scrollY > 28
+      if (next !== floating) { floating = next; setDetached(next) }
+    }
+    const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(update) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.cancelAnimationFrame(frame)
+    }
+  }, [])
 
   useEffect(() => setOpen(false), [path])
   useEffect(() => {
@@ -31,7 +50,7 @@ export function SiteHeader() {
   }, [open])
 
   return (
-    <header className="site-header">
+    <header className="site-header" data-detached={detached}>
       <Link className="brand" to="/" data-cursor="HOME" aria-label="Tejas NG home">
         <span>TN</span><i>Portfolio / 26</i>
       </Link>

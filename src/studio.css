@@ -6,6 +6,8 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
 .paper-grain { opacity: .016; }
 .site-header { top: 20px; width: min(1280px, calc(100% - 48px)); height: 68px; border: 1px solid #333; border-radius: 18px; background: rgba(20,20,20,.94); color: #fff; grid-template-columns: 180px 1fr 160px; box-shadow: 0 10px 40px #0002; }
+.site-header { transition: top .6s var(--ease), width .6s var(--ease), border-radius .6s var(--ease), background .6s, box-shadow .6s, border-color .6s; }
+.site-header[data-detached=false] { top: 0; width: 100%; border-radius: 0; border-color: transparent transparent #ffffff12; background: #111; box-shadow: none; }
 .brand { border: 0; padding: 0 20px; }
 .brand > span { background: none; width: auto; font: 600 24px 'Space Grotesk',sans-serif; }
 .brand i { display: block; font-size: 12px; color: #a7a7a7; letter-spacing: 0; text-transform: none; }
@@ -59,6 +61,15 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
 .studio-portrait-tag { position: absolute; writing-mode: vertical-rl; right: -32px; top: 30px; font: 400 12px 'DM Mono',monospace; color: #777; letter-spacing: .12em; }
 .studio-wordmark { position: relative; font: 600 clamp(80px,18.7vw,280px)/.9 'Space Grotesk',sans-serif; letter-spacing: -.09em; padding: 25px 0 35px; white-space: nowrap; }
 .studio-wordmark > span { font-size: .14em; vertical-align: top; display: inline-block; padding-top: .4em; margin-left: .5em; }
+.kinetic-name { display: flex; align-items: flex-start; width: 100%; background: transparent; color: #f8f8f8; border: 0; text-align: left; font-size: clamp(72px,17.5vw,266px); isolation: isolate; touch-action: manipulation; }
+.kinetic-name > .name-letters { display: inline-flex; font: inherit; letter-spacing: inherit; padding: 0; margin: 0; }
+.name-letter { display: inline-block; transform-origin: 50% 100%; }
+.name-space { width: .25em; }
+.name-glyph { position: relative; display: inline-block; transform: translateY(var(--lift,0px)) rotate(var(--twist,0deg)); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.name-glyph::after { content: attr(data-letter); position: absolute; inset: 0; color: transparent; -webkit-text-stroke: 1px #aaa; transform: translateY(.12em); opacity: var(--echo,0); transition: opacity .4s; z-index: -1; pointer-events: none; }
+.kinetic-name > .name-spark { margin-left: .7em; padding: 0; font-size: .16em; line-height: 1; transition: transform .8s var(--ease); }
+.kinetic-name:hover .name-spark, .kinetic-name:focus-visible .name-spark { transform: rotate(180deg); }
+.kinetic-name:focus-visible { outline: 1px dashed #aaa; outline-offset: 8px; border-radius: 8px; }
 .studio-hero-foot { border-top: 1px solid #343434; padding-top: 22px; display: flex; align-items: center; justify-content: space-between; color: #888; font: 400 12px 'DM Mono',monospace; }
 .studio-hero-foot a { color: #ddd; display: flex; gap: 20px; }
 .studio-hero-foot a span { animation: nudgeDown 2s ease-in-out infinite; }
@@ -224,7 +235,7 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   .site-header { top: 12px; width: calc(100% - 24px); grid-template-columns: 1fr auto; height: 60px; }
   .header-end { padding: 7px; }
   .menu-button { color: white; border: 1px solid #555; border-radius: 10px; font-size: 13px; }
-  .mobile-nav { top: 66px; border-color: #444; border-radius: 16px; overflow: hidden; background: #181818; color: white; }
+  .mobile-nav { top: 66px; border-color: #444; border-radius: 16px; max-height: calc(100dvh - 100px); overflow-y: auto; overscroll-behavior: contain; background: #181818; color: white; }
   .mobile-nav a { border-color: #333; }
   .mobile-nav small { font-size: 12px; }
   .studio-hero { padding-top: 108px; }
@@ -267,6 +278,7 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   .studio-portrait-caption { margin: 0; }
   .portrait-corner { display: none; }
   .studio-wordmark { font-size: 18vw; padding-top: 22px; }
+  .kinetic-name { font-size: 17vw; }
   .studio-hero-foot { font-size: 10px; gap: 15px; }
   .studio-hero-foot > span:last-child { display: none; }
   .studio-ticker { padding-block: 14px; }
@@ -302,4 +314,6 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
 @media (prefers-reduced-motion: reduce) {
   .studio-ticker > div, .studio-feature, .studio-hero-foot a span { animation: none; }
   .studio-portrait { transform: none !important; }
+  .kinetic-name .name-glyph, .kinetic-name .name-spark { transform: none !important; }
+  .name-glyph::after { display: none; }
 }

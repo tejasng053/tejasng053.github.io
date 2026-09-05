@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ArrowIcon, ContactBand, ExternalLink, SectionHeading } from '../components'
 import { featuredProjects, site } from '../data'
 import { Link } from '../router'
+import { AnimatedName } from '../AnimatedName'
 
 const indexPages = [
   { path: '/projects', no: '01', title: 'The work', detail: 'Products, experiments & open source', meta: 'Explore projects' },
@@ -43,7 +44,7 @@ export function HomePage() {
             <span className="studio-portrait-tag">BUILDING. LEARNING. REPEATING.</span>
           </div>
         </div>
-        <div className="studio-wordmark" aria-hidden="true">TEJAS NG<span>✳</span></div>
+        <AnimatedName />
         <div className="studio-hero-foot"><span>SOFTWARE / AI / RESEARCH</span><a href="#selected-work">SCROLL TO EXPLORE <span>↓</span></a><span>PORTFOLIO — 2026</span></div>
       </section>
 
