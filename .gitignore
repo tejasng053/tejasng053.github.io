@@ -1,2 +1,21 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+
+# Production output
+dist/
+
+# TypeScript build cache and generated config output
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+*.swp
