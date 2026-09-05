@@ -1,0 +1,97 @@
+/* A single motion rhythm: quick feedback, soft landings, no scroll hijacking. */
+:root { --ease: cubic-bezier(.22,1,.36,1); --motion-fast: 180ms; --motion-soft: 520ms; }
+.route-page { animation: pageArrive .5s var(--ease) both; }
+[data-reveal] { filter: none; transform: translateY(20px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+[data-reveal].visible { filter: none; }
+.studio-feature { animation: pageArrive .42s var(--ease) both; }
+:is(.studio-button, .project-action-button, .repository-filters button, .studio-project-picker button, .menu-button, .email-copy-control button) { transition: transform var(--motion-fast) var(--ease), background .25s, color .25s, box-shadow .25s, border-color .25s; }
+:is(.studio-button, .project-action-button, .repository-filters button, .studio-project-picker button, .menu-button, .email-copy-control button):active { transform: translateY(1px) scale(.97); box-shadow: none; }
+:is(.arrow-link, .studio-text-link, .studio-button, .project-action-button) svg { transition: transform .35s var(--ease); }
+:is(.arrow-link, .studio-text-link, .studio-button, .project-action-button):is(:hover, :focus-visible) svg { transform: translate(2px,-2px); }
+.desktop-nav a:active { transform: scale(.95); }
+.mobile-nav { transform-origin: top center; animation: menuArrive .3s var(--ease); }
+
+/* Real project UI, presented as a stack of slightly playful browser cards. */
+.playful-preview { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: center; min-width: 0; padding: 60px 38px 80px; background: #202020; perspective: 1100px; overflow: hidden; }
+.preview-backplate { position: absolute; width: calc(100% - 76px); aspect-ratio: 1.5; max-height: 75%; border: 1px solid #777; border-radius: 16px; transform: rotate(-5deg); transition: transform .65s var(--ease), border-color .4s; }
+.preview-window { position: relative; width: 100%; overflow: hidden; border: 2px solid #111; border-radius: 13px; background: #f7f7f7; color: #111; box-shadow: 8px 10px 0 #0008; transform: rotate(-1.5deg); transition: transform .65s var(--ease), box-shadow .65s var(--ease); }
+.preview-toolbar { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 12px; border-bottom: 1px solid #ccc; font: 400 12px 'DM Mono',monospace; }
+.preview-toolbar > span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preview-toolbar > span:last-child { margin-left: auto; font-size: 18px; }
+.preview-dots { display: flex; gap: 4px; flex-shrink: 0; }
+.preview-dots i { width: 6px; height: 6px; border: 1px solid #777; border-radius: 50%; }
+.playful-preview .preview-screenshot { display: block; width: 100%; height: auto; aspect-ratio: 1.6; max-height: none; object-fit: contain; border-radius: 0; box-shadow: none; background: #fff; transform: none; transition: transform .8s var(--ease); }
+.preview-type-art { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 28px; aspect-ratio: 1.6; color: #111; }
+.preview-type-art small, .preview-type-art > span { font: 400 12px/1.5 'DM Mono',monospace; }
+.preview-type-art strong { font: 600 clamp(30px,4vw,55px)/1 'Space Grotesk',sans-serif; letter-spacing: -.05em; }
+.preview-sticker { position: absolute; right: 24px; bottom: 46px; display: flex; align-items: center; gap: 16px; padding: 12px 16px; border: 2px solid #111; border-radius: 8px; color: #111; background: #fff; box-shadow: 4px 5px 0 #0008; font: 500 12px 'DM Mono',monospace; transform: rotate(5deg); transition: transform .6s var(--ease); }
+.preview-sticker > span { font-size: 22px; }
+.preview-caption { position: absolute; inset: auto 24px 16px; display: flex; justify-content: space-between; gap: 12px; color: #aaa; font: 400 12px 'DM Mono',monospace; }
+.playful-preview:focus-visible { outline-offset: -6px; outline-color: white; }
+.playful-preview:focus-visible .preview-window { transform: translateY(-10px) rotate(0); }
+.playful-preview:active .preview-window { transform: translateY(-2px) scale(.98); }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .playful-preview:hover .preview-window { transform: rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) translateY(-12px) rotate(1deg); box-shadow: 12px 18px 0 #0006; }
+  .playful-preview:hover .preview-backplate { transform: rotate(-8deg) scale(1.025); border-color: #aaa; }
+  .playful-preview:hover .preview-sticker { transform: translateY(-8px) rotate(-4deg); }
+  .playful-preview:hover .preview-screenshot { transform: scale(1.025); }
+}
+@media (max-width: 620px) {
+  .playful-preview, .project-card-new.compact .playful-preview { min-height: 300px; padding: 42px 22px 76px; }
+  .preview-backplate { width: calc(100% - 44px); }
+  .preview-toolbar { padding: 0 8px; gap: 8px; font-size: 12px; }
+  .preview-sticker { right: 16px; bottom: 40px; padding: 8px 12px; }
+  .preview-caption { inset-inline: 16px; }
+  .preview-type-art { padding: 20px; }
+}
+@keyframes pageArrive { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+@keyframes menuArrive { from { opacity: 0; transform: translateY(-8px) scale(.98); } to { opacity: 1; transform: none; } }
+
+/* Native page crossfades keep the navigation stationary. Unsupported browsers use pageArrive. */
+.studio-portrait { transform: none; }
+.pop-portrait { position: relative; isolation: isolate; display: block; width: 100%; aspect-ratio: .85; padding: 0; border: 0; background: transparent; perspective: 900px; }
+.portrait-frame { position: absolute; inset: 8px -8px -8px 8px; border: 1px solid #929292; border-radius: 110px 110px 18px 18px; background: #343434; transform: rotate(3deg); transition: transform .65s var(--ease); }
+.pop-portrait .portrait-photo { position: relative; width: 100%; height: 100%; border-radius: 110px 110px 16px 16px; object-fit: cover; object-position: center 20%; filter: brightness(1.045) contrast(1.035) saturate(1.04); border: 1px solid #aaa; box-shadow: 0 12px 30px #0003; transform-origin: center 85%; transition: transform .65s var(--ease), box-shadow .65s var(--ease); }
+.portrait-hello { position: absolute; left: -12px; bottom: 30px; padding: 12px 16px; background: white; color: #111; border: 2px solid #111; border-radius: 8px; box-shadow: 4px 5px 0 #0006; font: 500 14px 'Space Grotesk',sans-serif; display: flex; align-items: center; gap: 25px; opacity: 0; transform: translateY(12px) rotate(-8deg); transition: opacity .35s, transform .55s var(--ease); }
+.portrait-hello > span { font-size: 22px; }
+.portrait-toggle { position: absolute; right: 12px; bottom: 12px; display: grid; place-items: center; width: 38px; height: 38px; background: #fff; color: #111; border: 1px solid #111; border-radius: 50%; font-size: 24px; transition: transform .45s var(--ease); }
+.pop-portrait[aria-pressed=true] .portrait-photo, .pop-portrait:focus-visible .portrait-photo { transform: translateY(-16px) scale(1.055) rotate(-2deg); box-shadow: 0 28px 50px #0005; }
+.pop-portrait[aria-pressed=true] .portrait-hello, .pop-portrait:focus-visible .portrait-hello { opacity: 1; transform: translateY(0) rotate(-5deg); }
+.pop-portrait:focus-visible { outline: 2px dashed currentColor; outline-offset: 14px; border-radius: 110px 110px 16px 16px; }
+.about-portrait .pop-portrait { max-width: 430px; margin-inline: auto; }
+#main-content:focus { outline: none; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .pop-portrait:hover .portrait-photo { transform: translateY(-20px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) scale(1.06) rotate(-2deg); box-shadow: 0 32px 55px #0005; }
+  .pop-portrait:hover .portrait-frame { transform: rotate(6deg) scale(.98); }
+  .pop-portrait:hover .portrait-hello { opacity: 1; transform: translateY(0) rotate(-5deg); }
+  .pop-portrait:hover .portrait-toggle { transform: rotate(90deg); }
+}
+@media (max-width: 620px) {
+  .studio-portrait { grid-template-columns: 115px 1fr; padding-block: 8px; }
+  .studio-portrait .pop-portrait { aspect-ratio: .9; }
+  .studio-portrait :is(.portrait-photo, .portrait-frame) { border-radius: 38px 38px 10px 10px; }
+  .studio-portrait .portrait-hello { display: none; }
+  .studio-portrait .portrait-toggle { width: 28px; height: 28px; bottom: 6px; right: 6px; font-size: 20px; }
+  .pop-portrait[aria-pressed=true] .portrait-photo { transform: translateY(-8px) scale(1.045); }
+  .about-portrait { padding: 18px 8px; }
+}
+.site-header { view-transition-name: navigation; }
+.cursor-layer { view-transition-name: pointer; }
+html[data-native-page-motion] .route-page { animation: none; }
+html[data-page-transition] .page-intro { opacity: 1; transform: none; }
+::view-transition-old(root) { animation: pageDepart .2s ease both; }
+::view-transition-new(root) { animation: pageArrive .4s var(--ease) both; }
+::view-transition-group(navigation) { animation-duration: .4s; }
+::view-transition-old(pointer) { display: none; }
+::view-transition-new(pointer) { animation: none; }
+::view-transition { pointer-events: none; }
+@keyframes pageDepart { to { opacity: 0; transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) {
+  .route-page, .studio-feature, .mobile-nav { animation: none; }
+  [data-reveal] { transform: none; opacity: 1; }
+  .playful-preview .preview-window, .playful-preview .preview-screenshot, .playful-preview .preview-sticker { transition: none; }
+  .playful-preview:is(:hover,:focus-visible,:active) .preview-window { transform: none; }
+  .pop-portrait:is(:hover,:focus-visible,[aria-pressed=true]) .portrait-photo { transform: none; }
+  .pop-portrait .portrait-hello { transform: none; transition: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

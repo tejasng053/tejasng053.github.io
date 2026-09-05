@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react'
 
 type RouterValue = {
@@ -23,16 +24,23 @@ function normalizePath(pathname: string) {
 
 export function RouterProvider({ children }: { children: ReactNode }) {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname))
+  const transitionRef = useRef<ViewTransition | null>(null)
+  const navigationId = useRef(0)
 
   useEffect(() => {
-    const handlePopState = () => setPath(normalizePath(window.location.pathname))
+    const handlePopState = () => {
+      navigationId.current += 1
+      transitionRef.current?.skipTransition()
+      delete document.documentElement.dataset.pageTransition
+      setPath(normalizePath(window.location.pathname))
+    }
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.title = titles[path] ?? 'Tejas NG — Portfolio'
-    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [path])
 
   const value = useMemo<RouterValue>(() => ({
@@ -40,11 +48,36 @@ export function RouterProvider({ children }: { children: ReactNode }) {
     navigate: (to) => {
       const next = normalizePath(to)
       if (next === path) {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        navigationId.current += 1
+        transitionRef.current?.skipTransition()
+        delete document.documentElement.dataset.pageTransition
+        window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
         return
       }
-      window.history.pushState({}, '', next)
-      setPath(next)
+      const id = ++navigationId.current
+      transitionRef.current?.skipTransition()
+      const update = () => {
+        if (id !== navigationId.current) return
+        window.history.pushState({}, '', next)
+        flushSync(() => setPath(next))
+        document.getElementById('main-content')?.focus({ preventScroll: true })
+      }
+      if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        update()
+        return
+      }
+      document.documentElement.dataset.pageTransition = 'true'
+      document.documentElement.dataset.nativePageMotion = 'true'
+      const transition = document.startViewTransition(update)
+      transitionRef.current = transition
+      void transition.ready.catch(() => {}) // Interrupted transitions still complete navigation.
+      const finish = () => {
+        if (id === navigationId.current) {
+          delete document.documentElement.dataset.pageTransition
+          transitionRef.current = null
+        }
+      }
+      void transition.finished.then(finish, finish)
     },
   }), [path])
 
@@ -64,7 +97,7 @@ export function Link({ to, onClick, ...props }: LinkProps) {
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(event)
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || props.target === '_blank' || props.download != null) return
     event.preventDefault()
     navigate(to)
   }

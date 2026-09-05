@@ -35,7 +35,7 @@ function SiteRoutes() {
       <div className="paper-grain" aria-hidden="true" />
       <SiteHeader />
       <RevealController route={path} />
-      <main id="main-content" key={path}>{routes[path] ?? <NotFoundPage />}</main>
+      <main id="main-content" key={path} tabIndex={-1}>{routes[path] ?? <NotFoundPage />}</main>
       <SiteFooter />
     </>
   )

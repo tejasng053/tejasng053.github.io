@@ -3,6 +3,8 @@ import { ArrowIcon, ContactBand, ExternalLink, SectionHeading } from '../compone
 import { featuredProjects, site } from '../data'
 import { Link } from '../router'
 import { AnimatedName } from '../AnimatedName'
+import { ProjectVisual } from '../ProjectVisual'
+import { PopPortrait } from '../PopPortrait'
 
 const indexPages = [
   { path: '/projects', no: '01', title: 'The work', detail: 'Products, experiments & open source', meta: 'Explore projects' },
@@ -33,13 +35,8 @@ export function HomePage() {
             <p className="studio-hero-description">I’m Tejas. I build web experiences and AI systems, with curiosity for the problem and care for the details.</p>
             <div className="studio-hero-actions"><Link to="/projects" className="studio-button light" data-cursor="EXPLORE">Explore my work <ArrowIcon /></Link><Link to="/about" className="studio-text-link">A little about me <ArrowIcon /></Link></div>
           </div>
-          <div className="studio-portrait" onPointerMove={(event) => {
-            if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-            const rect = event.currentTarget.getBoundingClientRect()
-            event.currentTarget.style.setProperty('--photo-x', `${((event.clientX - rect.left) / rect.width - .5) * 5}deg`)
-            event.currentTarget.style.setProperty('--photo-y', `${((event.clientY - rect.top) / rect.height - .5) * -5}deg`)
-          }} onPointerLeave={(event) => { event.currentTarget.style.setProperty('--photo-x', '0deg'); event.currentTarget.style.setProperty('--photo-y', '0deg') }}>
-            <div className="studio-portrait-image"><img src="/assets/tejas-ng.jpg" alt="Tejas NG" fetchPriority="high" /><span className="portrait-corner">↗</span></div>
+          <div className="studio-portrait">
+            <PopPortrait priority />
             <div className="studio-portrait-caption"><strong>Tejas NG</strong><span>CS @ RVITM · Class of 2027</span></div>
             <span className="studio-portrait-tag">BUILDING. LEARNING. REPEATING.</span>
           </div>
@@ -54,10 +51,7 @@ export function HomePage() {
         <SectionHeading index="01" title="Built with intent." note="A few things I’ve spent time thinking about, building, and making better." action={<Link className="arrow-link" to="/projects">All projects <ArrowIcon /></Link>} />
         <div className="studio-project-picker" role="group" aria-label="Choose a featured project">{featuredProjects.map((item, index) => <button key={item.id} type="button" aria-pressed={selected === index} onClick={() => setSelected(index)} className={selected === index ? 'selected' : ''}><span>0{index + 1}</span>{item.name}<ArrowIcon /></button>)}</div>
         <article className="studio-feature" key={project.id}>
-          <a className="studio-feature-image" href={project.live ?? project.repository} target="_blank" rel="noreferrer" data-cursor={project.live ? 'LAUNCH' : 'CODE'} aria-label={`Open ${project.name}${project.live ? ' live demo' : ' on GitHub'}`}>
-            {project.image ? <img src={project.image} alt={project.imageAlt} loading="lazy" /> : <div className="studio-type-art"><small>NATURAL LANGUAGE PROCESSING</small><strong>Words.<br />Patterns.<br />Evidence.</strong><span>TF-IDF → CLASSIFICATION → EXPLANATION</span></div>}
-            <span className="studio-image-badge">{project.status} <ArrowIcon /></span>
-          </a>
+          <ProjectVisual project={project} home />
           <div className="studio-feature-copy"><span className="studio-eyebrow">0{selected + 1} / {project.label}</span><h3>{project.name}</h3><p>{project.summary}</p><div className="project-stack">{project.stack.map((stack) => <span key={stack}>{stack}</span>)}</div><div className="studio-feature-actions"><a className="studio-button dark" href={project.live ?? project.repository} target="_blank" rel="noreferrer">{project.live ? 'Live demo' : 'Explore project'} <ArrowIcon /></a>{project.live && <ExternalLink href={project.repository}>GitHub</ExternalLink>}</div></div>
         </article>
       </section>

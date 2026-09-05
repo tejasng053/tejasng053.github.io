@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { featuredProjects, navigation, site } from './data'
 import type { FeaturedProject } from './data'
 import { Link, useRouter } from './router'
+import { ProjectVisual } from './ProjectVisual'
 
 export function ArrowIcon() {
   return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 16 16 4M7 4h9v9" /></svg>
@@ -117,16 +118,7 @@ export function ProjectCard({ project, index, compact = false }: { project: Feat
 
   return (
     <article className={`project-card-new ${compact ? 'compact' : ''}`} data-reveal>
-      <a className="project-visual-new" href={primaryUrl} target="_blank" rel="noreferrer" data-cursor={project.live ? 'LAUNCH' : 'VIEW'} aria-label={primaryLabel}>
-        {project.image ? <img src={project.image} alt={project.imageAlt ?? ''} /> : (
-          <div className="project-type-visual" aria-hidden="true">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <strong>{project.visualCode}</strong>
-            <i>TEJAS_NG / {project.year}</i>
-          </div>
-        )}
-        <div className="project-visual-label"><span>{project.status}</span><span>{project.year}</span></div>
-      </a>
+      <ProjectVisual project={project} />
       <div className="project-copy-new">
         <div className="project-number">{String(index + 1).padStart(2, '0')}</div>
         <div>
@@ -209,7 +201,7 @@ export function CustomCursor() {
 
   useEffect(() => {
     const canUse = window.matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)')
-    if (!canUse.matches || !ringRef.current || !dotRef.current || !labelRef.current) return
+    if (!ringRef.current || !dotRef.current || !labelRef.current) return
 
     const ring = ringRef.current
     const dot = dotRef.current
@@ -219,22 +211,32 @@ export function CustomCursor() {
     let ringX = -100
     let ringY = -100
     let frame = 0
+    let previousTime = 0
+    let enabled = canUse.matches
 
-    document.documentElement.classList.add('custom-pointer')
+    document.documentElement.classList.toggle('custom-pointer', enabled)
 
-    const animate = () => {
-      ringX += (targetX - ringX) * 0.18
-      ringY += (targetY - ringY) * 0.18
+    const animate = (time: number) => {
+      frame = 0
+      const elapsed = previousTime ? Math.min(time - previousTime, 50) : 16
+      previousTime = time
+      const ease = 1 - Math.exp(-elapsed / 75)
+      ringX += (targetX - ringX) * ease
+      ringY += (targetY - ringY) * ease
       ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
-      frame = window.requestAnimationFrame(animate)
+      if (Math.abs(targetX - ringX) + Math.abs(targetY - ringY) > .1) frame = window.requestAnimationFrame(animate)
+      else previousTime = 0
     }
 
     const move = (event: PointerEvent) => {
+      if (!enabled || event.pointerType !== 'mouse') return
       targetX = event.clientX
       targetY = event.clientY
+      if (!ring.classList.contains('shown')) { ringX = targetX; ringY = targetY }
       dot.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`
       ring.classList.add('shown')
       dot.classList.add('shown')
+      if (!frame) frame = window.requestAnimationFrame(animate)
     }
 
     const over = (event: PointerEvent) => {
@@ -247,10 +249,18 @@ export function CustomCursor() {
     const leave = () => {
       ring.classList.remove('shown')
       dot.classList.remove('shown')
+      window.cancelAnimationFrame(frame)
+      frame = 0
+      previousTime = 0
     }
-
-    frame = window.requestAnimationFrame(animate)
+    const preferenceChanged = () => {
+      enabled = canUse.matches
+      document.documentElement.classList.toggle('custom-pointer', enabled)
+      leave()
+    }
+    canUse.addEventListener('change', preferenceChanged)
     window.addEventListener('pointermove', move, { passive: true })
+    window.addEventListener('blur', leave)
     document.addEventListener('pointerover', over, { passive: true })
     document.addEventListener('mouseleave', leave)
 
@@ -258,6 +268,8 @@ export function CustomCursor() {
       document.documentElement.classList.remove('custom-pointer')
       window.cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', move)
+      window.removeEventListener('blur', leave)
+      canUse.removeEventListener('change', preferenceChanged)
       document.removeEventListener('pointerover', over)
       document.removeEventListener('mouseleave', leave)
     }

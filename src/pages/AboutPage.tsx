@@ -1,5 +1,6 @@
 import { ArrowIcon, ContactBand, ExternalLink, PageIntro, SectionHeading } from '../components'
 import { experience, nonTechnicalSkills, site } from '../data'
+import { PopPortrait } from '../PopPortrait'
 
 const quickFacts = [
   ['Base', 'Bengaluru, India'],
@@ -49,10 +50,7 @@ export function AboutPage() {
 
       <section className="about-profile-section section-pad section-rule">
         <div className="about-portrait" data-reveal>
-          <div className="portrait-window">
-            <img src="/assets/tejas-ng.jpg" alt="Portrait of Tejas NG" />
-            <span>TEJAS_NG / 2026</span>
-          </div>
+          <PopPortrait />
         </div>
         <div className="about-profile-copy" data-reveal>
           <span>INTRODUCTION</span>
