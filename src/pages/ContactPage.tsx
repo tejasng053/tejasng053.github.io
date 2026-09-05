@@ -1,7 +1,18 @@
+import { useState } from 'react'
 import { ArrowIcon, PageIntro } from '../components'
 import { site } from '../data'
 
 export function ContactPage() {
+  const [copyStatus, setCopyStatus] = useState('')
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(site.email)
+      setCopyStatus('Email copied. Ready when you are.')
+    } catch {
+      setCopyStatus('Couldn’t copy automatically. Use the email link above.')
+    }
+  }
+
   return (
     <div className="route-page contact-page">
       <PageIntro
@@ -24,6 +35,7 @@ export function ContactPage() {
             <div><small>EMAIL</small><strong>{site.email}</strong><p>Best for roles, project briefs, and collaboration details.</p></div>
             <ArrowIcon />
           </a>
+          <div className="email-copy-control"><button type="button" onClick={copyEmail}>Copy email address <span aria-hidden="true">↗</span></button><p role="status">{copyStatus}</p></div>
           <a href={site.linkedin} target="_blank" rel="noreferrer" data-cursor="CONNECT" data-reveal>
             <span>02</span>
             <div><small>LINKEDIN</small><strong>Connect with Tejas NG</strong><p>Best for a quick professional introduction or ongoing conversation.</p></div>

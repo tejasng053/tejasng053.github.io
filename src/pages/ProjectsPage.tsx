@@ -1,7 +1,17 @@
+import { useState } from 'react'
 import { ArrowIcon, ContactBand, ExternalLink, PageIntro, ProjectCard, SectionHeading } from '../components'
 import { codingStats, featuredProjects, openSourceContribution, publications, repositories, site } from '../data'
 
 export function ProjectsPage() {
+  const [query, setQuery] = useState('')
+  const [filter, setFilter] = useState('All')
+  const search = query.trim().toLowerCase()
+  const filteredRepositories = repositories.filter((repository) => {
+    const matchesQuery = `${repository.name} ${repository.description} ${repository.language}`.toLowerCase().includes(search)
+    const matchesFilter = filter === 'All' || (filter === 'Live demos' ? Boolean(repository.live) : filter === 'Forks' ? repository.kind === 'Fork' : repository.kind !== 'Fork')
+    return matchesQuery && matchesFilter
+  })
+
   return (
     <div className="route-page projects-page">
       <PageIntro
@@ -69,13 +79,22 @@ export function ProjectsPage() {
           note="All 19 repositories are included. Forks and small early experiments are labelled plainly."
           action={<ExternalLink href={site.github}>GitHub profile</ExternalLink>}
         />
+        <div className="repository-controls">
+          <label htmlFor="repository-search">FIND SOMETHING INTERESTING
+            <input id="repository-search" type="search" placeholder="Search projects, ideas, or languages…" value={query} onChange={(event) => setQuery(event.target.value)} />
+          </label>
+          <div className="repository-filters" role="group" aria-label="Filter repositories">
+            {['All', 'Live demos', 'Originals', 'Forks'].map((option) => <button type="button" key={option} aria-pressed={filter === option} onClick={() => setFilter(option)}>{option}</button>)}
+          </div>
+        </div>
+        <p className="repository-result-count" role="status">{filteredRepositories.length} of {repositories.length} repositories</p>
         <div className="repository-head" aria-hidden="true">
           <span>No.</span><span>Repository</span><span>Type</span><span>Language</span><span>Updated</span><span>Links</span>
         </div>
         <div className="repository-list">
-          {repositories.map((repository, index) => (
-            <article className="repository-row" key={repository.name} data-reveal>
-              <span className="repository-index">{String(index + 1).padStart(2, '0')}</span>
+          {filteredRepositories.map((repository) => (
+            <article className="repository-row" key={repository.name}>
+              <span className="repository-index">{String(repositories.indexOf(repository) + 1).padStart(2, '0')}</span>
               <div className="repository-name">
                 <h3>{repository.name}</h3>
                 <p>{repository.description}</p>
@@ -89,6 +108,7 @@ export function ProjectsPage() {
               </div>
             </article>
           ))}
+          {filteredRepositories.length === 0 && <div className="repository-empty"><h3>No matches this time.</h3><p>Try another keyword or explore the full archive.</p><button type="button" onClick={() => { setQuery(''); setFilter('All') }}>Reset filters <ArrowIcon /></button></div>}
         </div>
       </section>
 

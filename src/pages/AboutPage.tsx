@@ -53,7 +53,6 @@ export function AboutPage() {
             <img src="/assets/tejas-ng.jpg" alt="Portrait of Tejas NG" />
             <span>TEJAS_NG / 2026</span>
           </div>
-          <p>Shown in full colour. The interface stays monochrome; the person does not.</p>
         </div>
         <div className="about-profile-copy" data-reveal>
           <span>INTRODUCTION</span>
@@ -119,7 +118,7 @@ export function AboutPage() {
       <section className="human-skills-section inverse-section">
         <div className="human-skills-heading" data-reveal>
           <span>04 / HUMAN SKILLS</span>
-          <h2>Not soft.<br />Operational.</h2>
+          <h2>How I work<br />with people.</h2>
           <p>Every skill below is tied to an experience, not a buzzword.</p>
         </div>
         <div className="human-skills-list">

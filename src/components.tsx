@@ -21,6 +21,14 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => setOpen(false), [path])
+  useEffect(() => {
+    if (!open) return
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [open])
 
   return (
     <header className="site-header">
@@ -42,7 +50,7 @@ export function SiteHeader() {
       </div>
       {open && (
         <nav className="mobile-nav" aria-label="Mobile navigation">
-          {navigation.map((item) => <Link key={item.path} to={item.path}><small>{item.number}</small><span>{item.label}</span></Link>)}
+          {navigation.map((item) => <Link key={item.path} to={item.path} aria-current={path === item.path ? 'page' : undefined} onClick={() => setOpen(false)}><small>{item.number}</small><span>{item.label}</span></Link>)}
           <a href={site.codolio} target="_blank" rel="noreferrer"><small>EXT</small><span>Codolio ↗</span></a>
         </nav>
       )}
