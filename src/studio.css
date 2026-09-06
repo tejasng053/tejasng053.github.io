@@ -317,3 +317,348 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   .kinetic-name .name-glyph, .kinetic-name .name-spark { transform: none !important; }
   .name-glyph::after { display: none; }
 }
+
+
+/* Home navigation console -------------------------------------------------- */
+.site-header[data-home="true"][data-detached="false"] {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-22px) scale(.96);
+  border-radius: 18px;
+}
+.site-header[data-home="true"] {
+  transition:
+    opacity .42s var(--ease),
+    transform .62s var(--ease),
+    top .6s var(--ease),
+    width .6s var(--ease),
+    border-radius .6s var(--ease),
+    background .6s,
+    box-shadow .6s,
+    border-color .6s;
+}
+.site-header[data-home="true"][data-detached="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+.site-header[data-home="true"][data-detached="true"] .brand {
+  animation: navPop .48s .02s var(--ease) both;
+}
+.site-header[data-home="true"][data-detached="true"] .desktop-nav a {
+  animation: navPop .48s var(--ease) both;
+}
+.site-header[data-home="true"][data-detached="true"] .desktop-nav a:nth-child(1) { animation-delay: .05s; }
+.site-header[data-home="true"][data-detached="true"] .desktop-nav a:nth-child(2) { animation-delay: .09s; }
+.site-header[data-home="true"][data-detached="true"] .desktop-nav a:nth-child(3) { animation-delay: .13s; }
+.site-header[data-home="true"][data-detached="true"] .desktop-nav a:nth-child(4) { animation-delay: .17s; }
+.site-header[data-home="true"][data-detached="true"] .desktop-nav a:nth-child(5) { animation-delay: .21s; }
+.site-header[data-home="true"][data-detached="true"] .header-end {
+  animation: navPop .48s .24s var(--ease) both;
+}
+
+.studio-home .studio-hero-body {
+  grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr);
+  gap: clamp(42px, 7vw, 110px);
+}
+
+.home-console-stage {
+  width: min(100%, 390px);
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  perspective: 1200px;
+}
+.home-gameboy {
+  position: relative;
+  width: 100%;
+  aspect-ratio: .72;
+  padding: 22px 22px 30px;
+  border: 1px solid #b8b8b8;
+  border-radius: 24px 24px 74px 24px;
+  color: #171717;
+  background:
+    linear-gradient(145deg, #f2f1ea 0%, #d7d6d0 58%, #c9c8c2 100%);
+  box-shadow:
+    inset 2px 2px 0 #fff,
+    inset -2px -3px 0 #aeadA7,
+    0 30px 60px #0008,
+    0 3px 0 #8d8d88;
+  transform: rotate(-1.2deg);
+  transition: transform .65s var(--ease), box-shadow .65s var(--ease);
+}
+.home-gameboy::after {
+  content: '';
+  position: absolute;
+  inset: 8px 18px auto;
+  height: 1px;
+  background: #aaa;
+  box-shadow: 0 4px 0 #f8f8f4;
+  opacity: .8;
+}
+.home-console-stage:hover .home-gameboy {
+  transform: translateY(-8px) rotate(.6deg);
+  box-shadow:
+    inset 2px 2px 0 #fff,
+    inset -2px -3px 0 #aeadA7,
+    0 42px 75px #0009,
+    0 3px 0 #8d8d88;
+}
+.gameboy-topline {
+  height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666;
+  font: 500 9px 'DM Mono', monospace;
+  letter-spacing: .08em;
+}
+.gameboy-screen-bezel {
+  margin-top: 6px;
+  padding: 15px 16px 17px;
+  border-radius: 14px 14px 34px 14px;
+  background: #34373a;
+  box-shadow: inset 0 0 0 2px #202225, 0 2px 0 #fff8;
+}
+.gameboy-screen {
+  min-height: 235px;
+  padding: 15px;
+  border: 2px solid #667054;
+  border-radius: 4px;
+  color: #1d2815;
+  background:
+    repeating-linear-gradient(0deg, #9ead72 0 2px, #a8b97b 2px 4px);
+  box-shadow:
+    inset 0 0 32px #52613a55,
+    0 0 0 2px #141914;
+  font-family: 'DM Mono', monospace;
+}
+.gameboy-screen-head {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #344126;
+  font-size: 8px;
+  letter-spacing: .06em;
+}
+.gameboy-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.gameboy-ready i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 2px #33412622;
+}
+.gameboy-screen > p {
+  margin: 12px 0 8px;
+  font: 600 9px 'DM Mono', monospace;
+  letter-spacing: .08em;
+}
+.gameboy-nav {
+  display: grid;
+  gap: 4px;
+}
+.gameboy-nav a {
+  display: grid;
+  grid-template-columns: 23px 1fr auto;
+  align-items: center;
+  min-height: 32px;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  font: 600 11px 'DM Mono', monospace;
+  text-transform: uppercase;
+  transition: background .18s, color .18s, transform .18s, border-color .18s;
+}
+.gameboy-nav a small {
+  font-size: 7px;
+  opacity: .66;
+}
+.gameboy-nav a b {
+  font-size: 17px;
+  font-weight: 500;
+  transform: translateX(-2px);
+  transition: transform .2s;
+}
+.gameboy-nav a:hover,
+.gameboy-nav a:focus-visible {
+  outline: none;
+  color: #9ead72;
+  background: #26321d;
+  border-color: #1a2414;
+  transform: translateX(2px);
+}
+.gameboy-nav a:hover b,
+.gameboy-nav a:focus-visible b {
+  transform: translateX(2px);
+}
+
+.gameboy-brandline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 12px 8px 0;
+}
+.gameboy-brandline strong {
+  color: #344061;
+  font: 700 22px 'Space Grotesk', sans-serif;
+  letter-spacing: -.06em;
+}
+.gameboy-brandline span {
+  color: #686868;
+  font: 500 8px 'DM Mono', monospace;
+  letter-spacing: .08em;
+}
+
+.gameboy-controls {
+  position: relative;
+  height: 104px;
+  margin-top: 8px;
+}
+.gameboy-dpad {
+  position: absolute;
+  left: 17px;
+  top: 22px;
+  width: 76px;
+  height: 76px;
+}
+.gameboy-dpad i {
+  position: absolute;
+  left: 26px;
+  top: 0;
+  width: 25px;
+  height: 76px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #202124, #333438 48%, #17181a);
+  box-shadow: inset 1px 1px 0 #555, 0 3px 4px #0005;
+}
+.gameboy-dpad i:last-child { transform: rotate(90deg); }
+.gameboy-dpad::after {
+  content: '';
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  background: #151618;
+  box-shadow: inset 0 0 0 2px #3c3d41;
+}
+.gameboy-center-controls {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  display: flex;
+  gap: 12px;
+  transform: translateX(-50%) rotate(-18deg);
+}
+.gameboy-center-controls i {
+  width: 34px;
+  height: 8px;
+  border-radius: 10px;
+  background: #777873;
+  box-shadow: inset 0 1px 1px #aaa, 0 2px 3px #0003;
+}
+.gameboy-ab {
+  position: absolute;
+  right: 11px;
+  top: 25px;
+  display: flex;
+  gap: 12px;
+  transform: rotate(-22deg);
+}
+.gameboy-ab i {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #6d123b;
+  background: radial-gradient(circle at 35% 30%, #d3487c, #982250 68%, #6d123b);
+  box-shadow: inset 2px 2px 3px #f783a855, 0 4px 5px #0005;
+  font: 700 9px 'DM Mono', monospace;
+  font-style: normal;
+}
+.gameboy-speaker {
+  position: absolute;
+  right: 27px;
+  bottom: 25px;
+  display: flex;
+  gap: 6px;
+  transform: rotate(-27deg);
+}
+.gameboy-speaker i {
+  width: 4px;
+  height: 34px;
+  border-radius: 8px;
+  background: #999a94;
+  box-shadow: inset 1px 0 #6f706c;
+}
+.gameboy-hint {
+  margin: 0;
+  color: #777;
+  font: 500 9px 'DM Mono', monospace;
+  letter-spacing: .12em;
+  text-align: center;
+}
+.gameboy-hint span {
+  display: inline-block;
+  margin-right: 7px;
+  color: #bbb;
+  animation: consoleHint 1.7s ease-in-out infinite;
+}
+
+@keyframes navPop {
+  from { opacity: 0; transform: translateY(12px) scale(.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes consoleHint {
+  50% { transform: translateY(-4px); }
+}
+
+@media (max-width: 980px) {
+  .studio-home .studio-hero-body {
+    grid-template-columns: minmax(0, 1fr) minmax(285px, 330px);
+    gap: 34px;
+  }
+  .home-console-stage { width: 330px; }
+  .gameboy-screen { min-height: 208px; }
+}
+
+@media (max-width: 760px) {
+  .site-header[data-home="true"][data-detached="false"] {
+    transform: translateX(-50%) translateY(-16px) scale(.97);
+  }
+  .studio-home .studio-hero-body {
+    grid-template-columns: 1fr;
+  }
+  .home-console-stage {
+    width: min(100%, 360px);
+    justify-self: center;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 460px) {
+  .home-console-stage { width: min(100%, 325px); }
+  .home-gameboy { padding: 17px 17px 26px; }
+  .gameboy-screen-bezel { padding: 12px 13px 14px; }
+  .gameboy-screen { min-height: 196px; padding: 12px; }
+  .gameboy-nav a { min-height: 28px; font-size: 10px; }
+  .gameboy-controls { height: 90px; }
+  .gameboy-dpad { transform: scale(.86); transform-origin: left top; }
+  .gameboy-ab { transform: rotate(-22deg) scale(.88); transform-origin: right top; }
+  .gameboy-speaker { bottom: 20px; transform: rotate(-27deg) scale(.9); transform-origin: right bottom; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header[data-home="true"],
+  .site-header[data-home="true"] *,
+  .home-gameboy,
+  .gameboy-hint span {
+    animation: none !important;
+    transition: none !important;
+  }
+}
