@@ -36,6 +36,27 @@ export function HomePage() {
             <div className="studio-hero-actions"><Link to="/projects" className="studio-button light" data-cursor="EXPLORE">Explore my work <ArrowIcon /></Link><Link to="/about" className="studio-text-link">A little about me <ArrowIcon /></Link></div>
           </div>
           <HomeGameBoy />
+          <aside className="studio-hero-guide" aria-label="How to use the portfolio navigation">
+            <div className="studio-hero-guide-head">
+              <span className="studio-eyebrow">THIS IS THE NAV BAR</span>
+              <small>HOW TO PLAY</small>
+            </div>
+            <div className="studio-hero-guide-list">
+              <div>
+                <span className="guide-key">D</span>
+                <div><strong>Choose your way</strong><p>Use the D-pad to move through Projects, Skills, About and Contact.</p></div>
+              </div>
+              <div>
+                <span className="guide-key round">A</span>
+                <div><strong>Open a page</strong><p>Press A when the page you want is highlighted on the screen.</p></div>
+              </div>
+              <div>
+                <span className="guide-key round">B</span>
+                <div><strong>Back to home</strong><p>B is the quick return key. You can also click any screen item directly.</p></div>
+              </div>
+            </div>
+            <p className="studio-hero-guide-note">Scroll down and this console navigation detaches into the simple top nav.</p>
+          </aside>
         </div>
         <AnimatedName />
         <div className="studio-hero-foot"><span>SOFTWARE / AI / RESEARCH</span><a href="#selected-work">SCROLL TO EXPLORE <span>↓</span></a><span>PORTFOLIO — 2026</span></div>
