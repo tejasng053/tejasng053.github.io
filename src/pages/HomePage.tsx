@@ -4,7 +4,7 @@ import { featuredProjects, site } from '../data'
 import { Link } from '../router'
 import { AnimatedName } from '../AnimatedName'
 import { ProjectVisual } from '../ProjectVisual'
-import { PopPortrait } from '../PopPortrait'
+import { HomeGameBoy } from '../HomeGameBoy'
 
 const indexPages = [
   { path: '/projects', no: '01', title: 'The work', detail: 'Products, experiments & open source', meta: 'Explore projects' },
@@ -35,11 +35,7 @@ export function HomePage() {
             <p className="studio-hero-description">I’m Tejas. I build web experiences and AI systems, with curiosity for the problem and care for the details.</p>
             <div className="studio-hero-actions"><Link to="/projects" className="studio-button light" data-cursor="EXPLORE">Explore my work <ArrowIcon /></Link><Link to="/about" className="studio-text-link">A little about me <ArrowIcon /></Link></div>
           </div>
-          <div className="studio-portrait">
-            <PopPortrait priority />
-            <div className="studio-portrait-caption"><strong>Tejas NG</strong><span>CS @ RVITM · Class of 2027</span></div>
-            <span className="studio-portrait-tag">BUILDING. LEARNING. REPEATING.</span>
-          </div>
+          <HomeGameBoy />
         </div>
         <AnimatedName />
         <div className="studio-hero-foot"><span>SOFTWARE / AI / RESEARCH</span><a href="#selected-work">SCROLL TO EXPLORE <span>↓</span></a><span>PORTFOLIO — 2026</span></div>
