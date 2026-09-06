@@ -42,6 +42,14 @@ export function HomeGameBoy() {
 
   return (
     <div className="home-console-stage" data-reveal>
+      <div className="gameboy-side-note" aria-hidden="true">
+        <strong>GAME BOY IS THE NAV</strong>
+        <span>use it to explore</span>
+        <svg viewBox="0 0 120 58" role="presentation">
+          <path d="M8 16C34 42 74 48 105 25" />
+          <path d="M93 23l14 1-4 13" />
+        </svg>
+      </div>
       <div className="home-gameboy" aria-label="Interactive portfolio navigation console">
         <div className="gameboy-topline" aria-hidden="true">
           <span>TN-01</span>
