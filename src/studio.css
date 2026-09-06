@@ -399,11 +399,11 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   opacity: .8;
 }
 .home-console-stage:hover .home-gameboy {
-  transform: translateY(-8px) rotate(.6deg);
+  transform: rotate(-1.2deg);
   box-shadow:
     inset 2px 2px 0 #fff,
     inset -2px -3px 0 #aeadA7,
-    0 42px 75px #0009,
+    0 30px 60px #0008,
     0 3px 0 #8d8d88;
 }
 .gameboy-topline {
@@ -486,7 +486,8 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   transition: transform .2s;
 }
 .gameboy-nav a:hover,
-.gameboy-nav a:focus-visible {
+.gameboy-nav a:focus-visible,
+.gameboy-nav a.selected {
   outline: none;
   color: #9ead72;
   background: #26321d;
@@ -494,8 +495,19 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   transform: translateX(2px);
 }
 .gameboy-nav a:hover b,
-.gameboy-nav a:focus-visible b {
+.gameboy-nav a:focus-visible b,
+.gameboy-nav a.selected b {
   transform: translateX(2px);
+}
+
+.gameboy-screen-help {
+  display: block;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #344126;
+  font: 600 7px/1.4 'DM Mono', monospace;
+  letter-spacing: .05em;
+  opacity: .78;
 }
 
 .gameboy-brandline {
@@ -527,7 +539,7 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   width: 76px;
   height: 76px;
 }
-.gameboy-dpad i {
+.gameboy-dpad span {
   position: absolute;
   left: 26px;
   top: 0;
@@ -536,8 +548,19 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   border-radius: 4px;
   background: linear-gradient(90deg, #202124, #333438 48%, #17181a);
   box-shadow: inset 1px 1px 0 #555, 0 3px 4px #0005;
+  pointer-events: none;
 }
-.gameboy-dpad i:last-child { transform: rotate(90deg); }
+.gameboy-dpad span::before {
+  content: '';
+  position: absolute;
+  left: -26px;
+  top: 25px;
+  width: 76px;
+  height: 25px;
+  border-radius: 4px;
+  background: linear-gradient(#202124, #333438 48%, #17181a);
+  box-shadow: inset 1px 1px 0 #555, 0 3px 4px #0005;
+}
 .gameboy-dpad::after {
   content: '';
   position: absolute;
@@ -545,6 +568,26 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   border-radius: 50%;
   background: #151618;
   box-shadow: inset 0 0 0 2px #3c3d41;
+  pointer-events: none;
+}
+.gameboy-dpad button {
+  position: absolute;
+  z-index: 2;
+  left: 26px;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  color: #aaa;
+  background: transparent;
+  font: 700 9px 'DM Mono', monospace;
+}
+.gameboy-dpad .dpad-up { top: 0; }
+.gameboy-dpad .dpad-down { bottom: 0; }
+.gameboy-dpad button:active {
+  background: #1118;
+  transform: scale(.94);
 }
 .gameboy-center-controls {
   position: absolute;
@@ -569,17 +612,22 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   gap: 12px;
   transform: rotate(-22deg);
 }
-.gameboy-ab i {
+.gameboy-ab button {
   width: 45px;
   height: 45px;
   display: grid;
   place-items: center;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
-  color: #6d123b;
+  color: #f6dce7;
   background: radial-gradient(circle at 35% 30%, #d3487c, #982250 68%, #6d123b);
   box-shadow: inset 2px 2px 3px #f783a855, 0 4px 5px #0005;
-  font: 700 9px 'DM Mono', monospace;
-  font-style: normal;
+  font: 700 10px 'DM Mono', monospace;
+}
+.gameboy-ab button:active {
+  transform: translateY(2px) scale(.95);
+  box-shadow: inset 2px 2px 5px #641333, 0 1px 2px #0005;
 }
 .gameboy-speaker {
   position: absolute;
@@ -596,26 +644,26 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
   background: #999a94;
   box-shadow: inset 1px 0 #6f706c;
 }
-.gameboy-hint {
-  margin: 0;
-  color: #777;
-  font: 500 9px 'DM Mono', monospace;
-  letter-spacing: .12em;
+.gameboy-instructions {
+  display: grid;
+  gap: 6px;
+  max-width: 360px;
   text-align: center;
 }
-.gameboy-hint span {
-  display: inline-block;
-  margin-right: 7px;
-  color: #bbb;
-  animation: consoleHint 1.7s ease-in-out infinite;
+.gameboy-instructions strong {
+  color: #d7d7d7;
+  font: 600 9px 'DM Mono', monospace;
+  letter-spacing: .12em;
+}
+.gameboy-instructions span {
+  color: #777;
+  font: 500 9px/1.5 'DM Mono', monospace;
+  letter-spacing: .04em;
 }
 
 @keyframes navPop {
   from { opacity: 0; transform: translateY(12px) scale(.94); }
   to { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes consoleHint {
-  50% { transform: translateY(-4px); }
 }
 
 @media (max-width: 980px) {
@@ -656,8 +704,7 @@ main, .site-footer { width: 100%; max-width: 1600px; border-inline: 0; }
 @media (prefers-reduced-motion: reduce) {
   .site-header[data-home="true"],
   .site-header[data-home="true"] *,
-  .home-gameboy,
-  .gameboy-hint span {
+  .home-gameboy {
     animation: none !important;
     transition: none !important;
   }
