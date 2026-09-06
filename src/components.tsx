@@ -24,21 +24,30 @@ export function SiteHeader() {
 
   useEffect(() => {
     let frame = 0
-    let floating = window.scrollY > 28
+    const isHome = path === '/'
+    const enterAt = isHome ? Math.min(window.innerHeight * 0.58, 560) : 28
+    const leaveAt = isHome ? Math.min(window.innerHeight * 0.22, 190) : 4
+    let floating = window.scrollY > enterAt
     setDetached(floating)
+
     const update = () => {
       frame = 0
-      // Separate thresholds prevent jitter near the top during trackpad scrolling.
-      const next = floating ? window.scrollY > 4 : window.scrollY > 28
-      if (next !== floating) { floating = next; setDetached(next) }
+      // The homepage keeps navigation inside the console until the hero has
+      // mostly passed. Separate thresholds prevent jitter during trackpad scroll.
+      const next = floating ? window.scrollY > leaveAt : window.scrollY > enterAt
+      if (next !== floating) {
+        floating = next
+        setDetached(next)
+      }
     }
+
     const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(update) }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.cancelAnimationFrame(frame)
     }
-  }, [])
+  }, [path])
 
   useEffect(() => setOpen(false), [path])
   useEffect(() => {
@@ -51,7 +60,7 @@ export function SiteHeader() {
   }, [open])
 
   return (
-    <header className="site-header" data-detached={detached}>
+    <header className="site-header" data-home={path === '/'} data-detached={detached}>
       <Link className="brand" to="/" data-cursor="HOME" aria-label="Tejas NG home">
         <span>TN</span><i>Portfolio / 26</i>
       </Link>
