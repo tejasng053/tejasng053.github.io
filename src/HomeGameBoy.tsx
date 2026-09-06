@@ -82,6 +82,10 @@ export function HomeGameBoy() {
         </div>
 
         <div className="gameboy-controls">
+          <span className="gameboy-control-label gameboy-control-label-dpad">SELECT</span>
+          <span className="gameboy-control-label gameboy-control-label-b">HOME</span>
+          <span className="gameboy-control-label gameboy-control-label-a">OPEN</span>
+
           <div className="gameboy-dpad" aria-label="Choose navigation item">
             <button type="button" className="dpad-up" onClick={() => moveSelection(-1)} aria-label="Previous navigation item">▲</button>
             <span aria-hidden="true" />
@@ -100,11 +104,7 @@ export function HomeGameBoy() {
           {Array.from({ length: 6 }, (_, index) => <i key={index} />)}
         </div>
       </div>
-
-      <div className="gameboy-instructions">
-        <strong>THIS GAME BOY IS THE NAV BAR.</strong>
-        <span>Use the D-pad to choose a page, then press A to open it.</span>
-      </div>
+      <p className="gameboy-caption">PORTFOLIO NAVIGATION CONSOLE / TN-01</p>
     </div>
   )
 }
