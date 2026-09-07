@@ -15,6 +15,7 @@ const titles: Record<string, string> = {
   '/skills': 'Skills & Certifications — Tejas NG',
   '/about': 'About — Tejas NG',
   '/contact': 'Contact — Tejas NG',
+  '/games': 'Games — Tejas NG',
 }
 
 function normalizePath(pathname: string) {
