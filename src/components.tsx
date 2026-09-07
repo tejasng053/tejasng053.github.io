@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { featuredProjects, navigation, site } from './data'
 import type { FeaturedProject } from './data'
 import { Link, useRouter } from './router'
@@ -21,6 +21,7 @@ export function SiteHeader() {
   const { path } = useRouter()
   const [open, setOpen] = useState(false)
   const [detached, setDetached] = useState(false)
+  const [pacmanRun, setPacmanRun] = useState(false)
 
   useEffect(() => {
     let frame = 0
@@ -50,6 +51,22 @@ export function SiteHeader() {
   }, [path])
 
   useEffect(() => setOpen(false), [path])
+
+  useEffect(() => {
+    if (path === '/' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setPacmanRun(false)
+      return
+    }
+
+    setPacmanRun(false)
+    const frame = window.requestAnimationFrame(() => setPacmanRun(true))
+    const timer = window.setTimeout(() => setPacmanRun(false), 1050)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(timer)
+    }
+  }, [path])
+
   useEffect(() => {
     if (!open) return
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -60,7 +77,15 @@ export function SiteHeader() {
   }, [open])
 
   return (
-    <header className="site-header" data-home={path === '/'} data-detached={detached}>
+    <header className="site-header" data-home={path === '/'} data-detached={detached} data-pacman={pacmanRun}>
+      {path !== '/' && (
+        <div className="pacman-nav-builder" aria-hidden="true">
+          <div className="pacman-dot-track">
+            {Array.from({ length: 18 }, (_, index) => <i key={index} style={{ '--dot-index': index } as CSSProperties} />)}
+          </div>
+          <span className="pacman-character" />
+        </div>
+      )}
       <Link className="brand" to="/" data-cursor="HOME" aria-label="Tejas NG home">
         <span>TN</span><i>Portfolio / 26</i>
       </Link>
