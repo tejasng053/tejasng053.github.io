@@ -19,3 +19,6 @@ vite.config.d.ts
 .idea/
 .vscode/
 *.swp
+
+# Compiled gameplay tests
+.test-build/

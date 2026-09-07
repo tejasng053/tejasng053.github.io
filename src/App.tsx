@@ -3,7 +3,6 @@ import type { ReactElement } from 'react'
 import { AboutPage } from './pages/AboutPage'
 import { ContactPage } from './pages/ContactPage'
 import { HomePage } from './pages/HomePage'
-import { GamesPage } from './pages/GamesPage'
 import { ProjectsPage } from './pages/ProjectsPage'
 import { SkillsPage } from './pages/SkillsPage'
 import { Link, RouterProvider, useRouter } from './router'
@@ -26,7 +25,6 @@ function SiteRoutes() {
     '/skills': <SkillsPage />,
     '/about': <AboutPage />,
     '/contact': <ContactPage />,
-    '/games': <GamesPage />,
   }
 
   return (

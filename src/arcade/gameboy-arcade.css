@@ -1,0 +1,42 @@
+/* The display changes mode; the original console, bezel and hero stay in place. */
+.home-gameboy .gameboy-screen { height: 294px; min-height: 0; display: flex; flex-direction: column; }
+.gameboy-screen-head, .gameboy-screen-help { flex-shrink: 0; }
+.gameboy-screen .gameboy-screen-help { margin-top: auto; }
+.gameboy-nav button { width: 100%; color: inherit; background: transparent; text-align: left; cursor: pointer; }
+.home-gameboy:focus-visible { outline: 2px solid #a8b97b; outline-offset: 6px; }
+.home-gameboy button { touch-action: manipulation; }
+.home-gameboy button:focus-visible { outline: 2px solid #26321d; outline-offset: 2px; }
+.gameboy-dpad .dpad-left { left: 0; top: 25px; }
+.gameboy-dpad .dpad-right { left: auto; right: 0; top: 25px; }
+.gameboy-dpad button { touch-action: none; user-select: none; -webkit-user-select: none; }
+/* Enlarge touch targets without changing the cross artwork. */
+.gameboy-dpad button::before { content: ''; position: absolute; inset: -5px; }
+.gameboy-center-controls button { position: relative; width: 34px; padding: 0; border: 0; background: transparent; color: #555; }
+.gameboy-center-controls button::before { content: ''; position: absolute; inset: -8px -3px; }
+.gameboy-center-controls i { display: block; }
+.gameboy-center-controls small { display: block; margin-top: 5px; font: 600 6px 'DM Mono', monospace; }
+.gameboy-center-controls button:active i { transform: translateY(1px); }
+.gb-arcade-intro { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; font-size: 10px; line-height: 1.5; }
+.gb-arcade-intro strong { font-size: 11px; }
+.gb-arcade-intro p { margin: 0; }
+.gb-arcade-intro span { font-size: 9px; }
+.gb-tetris-layout { flex: 1; min-height: 0; display: flex; justify-content: center; gap: 18px; padding: 9px 0; }
+.gb-tetris-well { position: relative; height: 100%; aspect-ratio: 10 / 18; flex-shrink: 0; border: 1px solid #26321d; background: #9ead72; }
+.gb-tetris-board { display: grid; width: 100%; height: 100%; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(18, 1fr); }
+.gb-tetris-board i { border: .5px solid #26321d12; min-width: 0; min-height: 0; }
+.gb-tetris-board i[data-cell='1'] { background: #405032; box-shadow: inset 0 0 0 1px #9ead7266; }
+.gb-tetris-board i[data-cell='2'] { background: #1d2815; box-shadow: inset 0 0 0 1px #9ead7288; }
+.gb-tetris-board i[data-cell='3'] { border: 1px solid #40503288; }
+.gb-tetris-stats { width: 87px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.gb-tetris-stats small { font-size: 8px; }
+.gb-tetris-stats strong { font-size: 15px; line-height: 1.2; margin-bottom: 3px; }
+.gb-tetris-stats button { width: 100%; padding: 5px 2px; border: 1px solid #34412688; color: #1d2815; background: #9ead7288; font: 600 8px 'DM Mono', monospace; cursor: pointer; }
+.gb-tetris-stats button:disabled { opacity: .4; cursor: default; }
+.gb-tetris-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #9ead72ee; text-align: center; }
+.gb-tetris-overlay strong { font-size: 11px; }
+.gb-tetris-overlay span { font-size: 7px; }
+@media (max-width: 460px) {
+  .home-gameboy .gameboy-screen { height: 272px; }
+  .gb-tetris-layout { gap: 12px; }
+  .gb-tetris-stats { width: 76px; }
+}

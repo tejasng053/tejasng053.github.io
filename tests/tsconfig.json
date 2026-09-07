@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "../src/arcade",
+    "outDir": "../.test-build"
+  },
+  "include": ["../src/arcade/engine.ts"]
+}
