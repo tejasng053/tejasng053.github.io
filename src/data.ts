@@ -41,6 +41,7 @@ export const navigation = [
   { number: '03', label: 'Skills', path: '/skills' },
   { number: '04', label: 'About', path: '/about' },
   { number: '05', label: 'Contact', path: '/contact' },
+  { number: '06', label: 'Games', path: '/games' },
 ]
 
 export const featuredProjects: FeaturedProject[] = [
