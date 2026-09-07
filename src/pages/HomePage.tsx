@@ -31,7 +31,7 @@ export function HomePage() {
         <div className="studio-hero-body">
           <div className="studio-hero-copy">
             <p className="studio-eyebrow">SOFTWARE ENGINEER IN THE MAKING</p>
-            <h1>Ideas into<br /><span>working things.</span></h1>
+            <h1>Imagination is<br /><span>the only limit.</span></h1>
             <p className="studio-hero-description">I’m Tejas. I build web experiences and AI systems, with curiosity for the problem and care for the details.</p>
             <div className="studio-hero-actions"><Link to="/projects" className="studio-button light" data-cursor="EXPLORE">Explore my work <ArrowIcon /></Link><Link to="/about" className="studio-text-link">A little about me <ArrowIcon /></Link></div>
           </div>
