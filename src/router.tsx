@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
+import { cancelThemeTransition } from './theme'
 import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react'
 
 type RouterValue = {
@@ -29,6 +30,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const handlePopState = () => {
+      cancelThemeTransition()
       navigationId.current += 1
       transitionRef.current?.skipTransition()
       delete document.documentElement.dataset.pageTransition
@@ -46,6 +48,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
   const value = useMemo<RouterValue>(() => ({
     path,
     navigate: (to) => {
+      cancelThemeTransition()
       const next = normalizePath(to)
       if (next === path) {
         navigationId.current += 1

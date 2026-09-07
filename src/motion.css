@@ -192,25 +192,3 @@ html[data-page-transition] .page-intro { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   .pacman-nav-builder { display: none; }
 }
-
-
-/* Theme change grows outward from the day/night control. */
-html[data-theme-transition="true"]::view-transition-old(root) {
-  animation: none;
-  z-index: 1;
-}
-html[data-theme-transition="true"]::view-transition-new(root) {
-  z-index: 2;
-  animation: themeCircleReveal .72s cubic-bezier(.22,.8,.2,1) both;
-}
-@keyframes themeCircleReveal {
-  from { clip-path: circle(0 at var(--theme-x) var(--theme-y)); }
-  to { clip-path: circle(var(--theme-radius) at var(--theme-x) var(--theme-y)); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html[data-theme-transition="true"]::view-transition-old(root),
-  html[data-theme-transition="true"]::view-transition-new(root) {
-    animation: none !important;
-  }
-}

@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Portfolio of Tejas NG — software engineering, AI/ML research, open-source contributions, technical skills, and leadership." />
-    <meta name="theme-color" content="#f2f2ed" />
+    <meta name="theme-color" content="#f6f7f9" />
+    <script>
+      // Apply the preference before the first paint, including on direct page loads.
+      (() => {
+        let saved;
+        try { saved = localStorage.getItem('tn-theme'); } catch {}
+        const theme = saved === 'light' || saved === 'dark' ? saved
+          : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#111318' : '#f6f7f9';
+      })();
+    </script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Tejas NG — Software Engineering, AI/ML & Research" />
     <meta property="og:description" content="Projects, public contributions, machine-learning research, verified skills, certifications, and NCC leadership." />

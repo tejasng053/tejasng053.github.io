@@ -1,0 +1,133 @@
+/* One palette per mode, shared by every portfolio surface. The console and project artwork retain their own colors. */
+:root, html[data-theme='light'] {
+  --paper: #f6f7f9; --paper-bright: #ffffff; --soft: #e9ecf1;
+  --ink: #171b24; --muted: #565e6e; --line: #cdd3dd; --line-dark: #cdd3dd;
+  --hero: #f6f7f9; --panel: #ffffff; --hover: #e5e9f0;
+  --header: #ffffffed; --shadow: #18243b16; --toggle-icon: #9a5700;
+  color-scheme: light;
+}
+html[data-theme='dark'] {
+  --paper: #111318; --paper-bright: #1b1f27; --soft: #20252e;
+  --ink: #f0f2f6; --muted: #aeb6c5; --line: #363e4b; --line-dark: #363e4b;
+  --hero: #111318; --panel: #1b1f27; --hover: #282f3b;
+  --header: #1b1f27ed; --shadow: #00000040; --toggle-icon: #c3d5ff;
+  color-scheme: dark;
+}
+html, body, main { background: var(--paper); color: var(--ink); }
+.studio-hero, .page-intro { background: var(--hero); color: var(--ink); }
+.inverse-section, .contact-band, .studio-index, .studio-ticker { background: var(--soft); color: var(--ink); }
+.studio-feature, .project-card-new, .snapshot-note, .snapshot-stats, .language-chart,
+.problem-stat-grid, .quick-facts-grid, .leadership-grid, .profile-links-section > div { background: var(--panel); color: var(--ink); border-color: var(--line); }
+.site-footer { background: var(--paper); color: var(--muted); border-color: var(--line); }
+.site-footer > a, .site-footer a:hover { color: var(--ink); }
+
+/* Navigation keeps the same shape and Pac-Man motion in either palette. */
+.site-header { grid-template-columns: auto minmax(0, 1fr) auto; background: var(--header); color: var(--ink); border-color: var(--line); box-shadow: 0 10px 40px var(--shadow); }
+.site-header[data-detached='false'] { background: var(--hero); border-bottom-color: var(--line); }
+.brand > span { color: var(--ink); }
+.brand i { color: var(--muted); }
+.header-end { gap: 8px; }
+.header-end > a, .menu-button { border-color: var(--line); color: var(--ink); }
+.desktop-nav a.active { color: var(--paper-bright); background: var(--ink); }
+.desktop-nav a:hover:not(.active), .mobile-nav a[aria-current=page] { background: var(--hover); color: var(--ink); }
+.header-end > a:hover, .menu-button:hover { background: var(--hover); color: var(--ink); }
+.mobile-nav { background: var(--panel); color: var(--ink); border-color: var(--line); }
+.mobile-nav a { border-color: var(--line); }
+.site-header[data-home='false'][data-pacman='true']::before { background: var(--hero); }
+.pacman-dot-track i { background: var(--ink); }
+html[data-theme='light'] .pacman-character { background: #ad6500; }
+/* Allow the mobile menu to extend beyond the header after its reveal finishes. */
+.site-header[data-home='false'][data-pacman='false'], .site-header:has(.mobile-nav) { overflow: visible; }
+.site-header[data-home] > .mobile-nav { position: absolute; height: auto; z-index: 5; }
+
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  flex: 0 0 auto; min-height: 44px; padding: 7px 11px; border: 1px solid var(--line);
+  border-radius: 999px; color: var(--ink); background: var(--panel); cursor: pointer;
+  box-shadow: 0 2px 7px var(--shadow); touch-action: manipulation;
+}
+.theme-toggle:hover { border-color: var(--muted); }
+.theme-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.theme-toggle-icon { width: 20px; height: 20px; display: grid; place-items: center; color: var(--toggle-icon); }
+.theme-toggle svg { width: 20px; height: 20px; stroke-width: 1.8; }
+.theme-toggle-label { min-width: 34px; font: 500 12px 'DM Mono', monospace; }
+.theme-toggle-track { width: 27px; height: 16px; padding: 3px; border-radius: 20px; background: var(--soft); border: 1px solid var(--line); }
+.theme-toggle-track i { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+html[data-theme='dark'] .theme-toggle-track i { transform: translateX(11px); }
+.theme-toggle-floating { position: fixed; z-index: 115; top: 20px; right: 24px; background: var(--header); backdrop-filter: blur(14px); box-shadow: 0 6px 24px var(--shadow); }
+
+/* Text hierarchy stays readable instead of inheriting fixed light/dark grays. */
+.studio-hero-meta, .studio-hero-copy > .studio-eyebrow, .studio-hero-description,
+.studio-hero-copy h1 > span, .studio-hero-foot, .page-intro-meta, .page-intro > p,
+.studio-feature-copy .studio-eyebrow, .studio-feature-copy > p, .studio-about p,
+.studio-index-intro h2 em, .studio-index-links > a > span, .studio-index-links small, .studio-index-links p,
+.repository-result-count, .open-source-heading > span, .open-source-heading > p,
+.pr-top, .pull-request-card > p, .pr-meta, .codolio-intro > span, .codolio-intro p,
+.chart-title, .language-legend small, .codolio-stat-grid small, .codolio-stat-grid span,
+.quick-facts-title > span, .quick-facts-grid small, .quick-facts-grid span,
+.human-skills-heading > span, .human-skills-heading p, .human-skills-list span, .human-skills-list p,
+.contact-statement > span, .contact-statement p, .contact-methods > a > span,
+.contact-methods small, .contact-methods p, .contact-band > span,
+.gameboy-side-note span, .gameboy-caption { color: var(--muted); }
+.studio-hero-meta time, .studio-hero-foot a, .kinetic-name, .gameboy-side-note, .pr-top b { color: var(--ink); }
+.gameboy-side-note svg { stroke: var(--muted); }
+.studio-hero-meta i { background: var(--ink); box-shadow: 0 0 0 5px var(--soft); }
+.name-glyph::after { -webkit-text-stroke-color: var(--muted); }
+.contact-statement h2 em { -webkit-text-stroke-color: var(--ink); }
+
+.studio-hero-foot, .studio-ticker, .page-intro-meta, .studio-text-link,
+.studio-index-links, .studio-index-links > a, .studio-project-picker button,
+.snapshot-stats > div, .problem-stat-grid > div, .profile-links-section > div > a,
+.leadership-grid article, .quick-facts-grid > div, .pull-request-card, .pr-meta,
+.language-chart, .language-bar, .language-legend, .language-legend > div,
+.codolio-stat-grid, .codolio-stat-grid > div, .human-skills-list, .human-skills-list > div,
+.contact-methods, .contact-methods > a, .email-copy-control, .contact-band > a,
+.repository-filters button, .repository-empty, .skill-pills i { border-color: var(--line); }
+
+.studio-project-picker button { color: var(--ink); }
+.studio-project-picker button > span { color: var(--muted); }
+.studio-project-picker button:hover, .studio-index-links > a:hover { background: var(--hover); }
+.studio-project-picker button.selected { background: var(--ink); color: var(--paper-bright); border-color: var(--ink); }
+.studio-project-picker button.selected > span { color: inherit; }
+.studio-button.light, .studio-button.dark, .project-actions .project-action-button.primary,
+.repository-filters button[aria-pressed=true], .repository-empty button {
+  background: var(--ink); color: var(--paper-bright); border-color: var(--ink);
+}
+.project-actions .project-action-button:hover, .project-actions .project-action-button.primary:hover,
+.contact-band > a:hover, .email-copy-control button:hover, .skill-pills i:hover {
+  background: var(--hover); color: var(--ink); border-color: var(--muted);
+}
+.repository-controls input { background: var(--panel); color: var(--ink); border-color: var(--line); }
+.repository-controls input::placeholder { color: var(--muted); opacity: 1; }
+.email-copy-control button { background: var(--panel); color: var(--ink); border-color: var(--line); }
+/* Keep labels and descriptions legible when a whole row is hovered. */
+.pull-request-card:hover, .publication-list > a:hover, .problem-stat-grid > div:hover,
+.profile-links-section > div > a:hover, .leadership-grid article:hover, .contact-methods > a:hover {
+  background: var(--hover); color: var(--ink);
+}
+.pull-request-card:hover .pr-top b { color: var(--ink); }
+html[data-theme='dark'] .paper-grain { mix-blend-mode: screen; opacity: .012; }
+.home-gameboy { color-scheme: light; }
+html[data-theme='light'] .home-gameboy, html[data-theme='light'] .home-console-stage:hover .home-gameboy { box-shadow: inset 2px 2px 0 #fff, inset -2px -3px 0 #aeadA7, 0 25px 50px #18243b25, 0 3px 0 #8d8d88; }
+
+/* The entire new frame grows from the button; no independent crossfading layers. */
+html[data-theme-transition='true']::view-transition-group(root) { animation: none; }
+html[data-theme-transition='true']::view-transition-old(root),
+html[data-theme-transition='true']::view-transition-new(root) { mix-blend-mode: normal; }
+html[data-theme-transition='true']::view-transition-old(root) { animation: none; z-index: 1; }
+html[data-theme-transition='true']::view-transition-new(root) { z-index: 2; animation: themeCircleReveal 650ms cubic-bezier(.3,0,.2,1) both; }
+html[data-theme-transition='true'] *, html[data-theme-transition='true'] *::before, html[data-theme-transition='true'] *::after { transition: none !important; }
+@keyframes themeCircleReveal {
+  from { clip-path: circle(0px at var(--theme-x) var(--theme-y)); }
+  to { clip-path: circle(var(--theme-radius) at var(--theme-x) var(--theme-y)); }
+}
+@media (max-width: 1100px) { .theme-toggle-track { display: none; } }
+@media (max-width: 860px) {
+  .site-header { grid-template-columns: 1fr auto; }
+  .theme-toggle { gap: 6px; padding-inline: 10px; }
+  .theme-toggle-floating { top: 13px; right: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle, .theme-toggle * { transition: none; }
+  html[data-theme-transition='true']::view-transition-old(root), html[data-theme-transition='true']::view-transition-new(root) { animation: none !important; }
+}
