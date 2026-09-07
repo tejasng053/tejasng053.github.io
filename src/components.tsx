@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
+import type { CSSProperties, MouseEvent as ReactMouseEvent, ReactNode } from 'react'
 import { featuredProjects, navigation, site } from './data'
 import type { FeaturedProject } from './data'
 import { Link, useRouter } from './router'
@@ -17,11 +17,64 @@ export function LinkedInIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9v8M7 6.5v.01M11 17v-5a3 3 0 0 1 6 0v5M11 9v8" /></svg>
 }
 
+type ThemeMode = 'light' | 'dark'
+
+function ThemeIcon({ theme }: { theme: ThemeMode }) {
+  if (theme === 'light') {
+    return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.2A8.2 8.2 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z" /></svg>
+  }
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" /></svg>
+}
+
 export function SiteHeader() {
   const { path } = useRouter()
   const [open, setOpen] = useState(false)
   const [detached, setDetached] = useState(false)
   const [pacmanRun, setPacmanRun] = useState(false)
+  const [theme, setTheme] = useState<ThemeMode>(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light')
+
+  const applyTheme = (next: ThemeMode) => {
+    document.documentElement.dataset.theme = next
+    document.documentElement.style.colorScheme = next
+    try { window.localStorage.setItem('tn-theme', next) } catch {}
+    setTheme(next)
+  }
+
+  const toggleTheme = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    const next: ThemeMode = theme === 'light' ? 'dark' : 'light'
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = rect.left + rect.width / 2
+    const y = rect.top + rect.height / 2
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
+    const root = document.documentElement
+    root.style.setProperty('--theme-x', `${x}px`)
+    root.style.setProperty('--theme-y', `${y}px`)
+    root.style.setProperty('--theme-radius', `${radius}px`)
+
+    if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      applyTheme(next)
+      return
+    }
+
+    root.dataset.themeTransition = 'true'
+    const transition = document.startViewTransition(() => applyTheme(next))
+    const cleanup = () => { delete root.dataset.themeTransition }
+    void transition.finished.then(cleanup, cleanup)
+  }
+
+  const themeButton = (floating = false) => (
+    <button
+      type="button"
+      className={`theme-toggle${floating ? ' theme-toggle-floating' : ''}`}
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      data-cursor={theme === 'light' ? 'NIGHT' : 'DAY'}
+    >
+      <ThemeIcon theme={theme} />
+      <span>{theme === 'light' ? 'Night' : 'Day'}</span>
+    </button>
+  )
 
   useEffect(() => {
     let frame = 0
@@ -77,7 +130,9 @@ export function SiteHeader() {
   }, [open])
 
   return (
-    <header className="site-header" data-home={path === '/'} data-detached={detached} data-pacman={pacmanRun}>
+    <>
+      {path === '/' && !detached && themeButton(true)}
+      <header className="site-header" data-home={path === '/'} data-detached={detached} data-pacman={pacmanRun}>
       {path !== '/' && (
         <div className="pacman-nav-builder" aria-hidden="true">
           <div className="pacman-dot-track">
@@ -98,6 +153,7 @@ export function SiteHeader() {
       </nav>
       <div className="header-end">
         <a href={site.codolio} target="_blank" rel="noreferrer" data-cursor="OPEN">Codolio <ArrowIcon /></a>
+        {themeButton()}
         <button className="menu-button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label="Toggle menu">
           <span>{open ? 'Close' : 'Menu'}</span><i>{open ? '×' : '＋'}</i>
         </button>
@@ -108,7 +164,8 @@ export function SiteHeader() {
           <a href={site.codolio} target="_blank" rel="noreferrer"><small>EXT</small><span>Codolio ↗</span></a>
         </nav>
       )}
-    </header>
+      </header>
+    </>
   )
 }
 
